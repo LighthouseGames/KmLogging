@@ -13,7 +13,7 @@ object KmLogging {
     private var isLoggingError = true
 
     init {
-        loggers.add(PlatformLogger(FixedLogLevel(true)))
+        loggers.add(PlatformLogger(FixedLogLevel(Platform.isDebug)))
     }
 
     /**

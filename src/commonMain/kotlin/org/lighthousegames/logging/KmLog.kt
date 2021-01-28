@@ -1,7 +1,9 @@
 package org.lighthousegames.logging
 
-class KmLog(tag: String? = null) {
-    val tagName = tag ?: KmLogging.createTag()
+class KmLog(tag: String) {
+    val tagName = tag
+
+    constructor() : this(KmLogging.createTag())
 
     inline fun verbose(msg: () -> Any?) {
         if (KmLogging.isLoggingVerbose())
@@ -80,7 +82,7 @@ class KmLog(tag: String? = null) {
 }
 
 fun logging(tag: String? = null): KmLog {
-    return KmLog(tag)
+    return if (tag == null) KmLog() else KmLog(tag)
 }
 
 

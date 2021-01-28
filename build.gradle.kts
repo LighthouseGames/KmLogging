@@ -22,11 +22,9 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting {
-        }
+        val commonMain by getting
 
-        val androidMain by getting {
-        }
+        val androidMain by getting
 
         val iosMain by getting
 
@@ -44,7 +42,7 @@ android {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "0.5.2"
+extra["artifactVersion"] = "0.7.0"
 extra["libraryName"] = "Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "Kotlin Multiplatform Logging"
 extra["gitUrl"] = "https://gitlab.com/olekdia/common/libraries/multiplatform-common"
