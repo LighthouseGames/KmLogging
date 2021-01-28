@@ -1,10 +1,10 @@
-# KmLogging
-[ ![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label=jcenter) ](https://bintray.com/lighthousegames/multiplatform/kmlogging/_latestVersion)
-[![Kotlin](https://img.shields.io/badge/kotlin-1.4.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
-![kmm](https://img.shields.io/badge/multiplatform-Android%20iOS%20JS-blue)
-[![License](https://img.shields.io/badge/license-Apache--2.0-blue)](http://www.apache.org/licenses/LICENSE-2.0)
+# Kotlin Multiplatform Logging  <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin-logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Android_robot_2014.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Apple_iOS_logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="30">
+[ ![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label= JCenter) ](https://bintray.com/lighthousegames/multiplatform/kmlogging/_latestVersion)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.4.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
+![kmm](https://img.shields.io/badge/Multiplatform-Android%20iOS%20JS-blue)
+[![License](https://img.shields.io/badge/License-Apache--2.0-blue)](http://www.apache.org/licenses/LICENSE-2.0)
 
-Kotlin multiplatform logging
+Kotlin multiplatform logging library targetting Android, iOS, and JS.
 
 ## Features:
 
@@ -17,15 +17,32 @@ Kotlin multiplatform logging
 
 ### Setup
 
+You need to use at least version `1.4.21` of the kotlin multiplatform plugin. Place the following in the commonMain section.
+
+build.gradle.kts
+
+```kotlin
+sourceSets {
+	val commonMain by getting {
+		dependencies {
+			api("org.lighthousegames:logging:$logging_version")
+		}
+	}
+}
+```
+build.gradle
+
 ```kotlin
 commonMain {
     dependencies {
-        api("org.lighthousegames:kmlogging:$logging_version")
+        api "org.lighthousegames:logging:$logging_version"
     }
 }
 ```
 
 ## Usage
+
+The library is available from the JCenter repository with the current version ![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label=JCenter)
 
 ```kotlin
 class MyClass {
@@ -47,12 +64,14 @@ class MyClass {
 With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and disabled for release builds. For JavaScript, logging is enabled by default for all levels.
 
 ### Log for release builds
+If logging is desired for release builds.
+
 ```kotlin
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(true)))
 ```
 
 ### Log to another system such as Crashlytics
-Let's say we only want to send the more important logs to Crashlytics to give some context to crashes so we only want to log info level and above. 
+If logging is only desired at certain levels that can be setup. For example, if only the more important logs should be sent to Crashlytics to give some context to crashes then only log info level and above. 
 That can be easily done by by defining and adding in a logger to do that:
 
 ```kotlin
@@ -90,9 +109,9 @@ KmLogging.addLogger(CrashlyticsLogger())
 ``` 
 
 
-## Usage in iOS Swift 
-By default the kotlin multiplatform toolchain will not export all KmLogging classes and those that are will be prefaced with Logging. 
-So if you want to use classes from swift code you will need to direct the plugin to export the logging library in your build.gradle.kts:
+## Usage in iOS and Swift 
+By default the kotlin multiplatform toolchain will not export all KmLogging classes and those that are will be prefaced with the stringLogging. 
+If you want to use classes from Swift code you will need to direct the plugin to export the logging library in your `build.gradle.kts`:
 
 ```kotlin
     ios {
