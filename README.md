@@ -1,12 +1,13 @@
 # Kotlin Multiplatform Logging  <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin-logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Android_robot_2014.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Apple_iOS_logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="30">
+
 [ ![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label= JCenter) ](https://bintray.com/lighthousegames/multiplatform/kmlogging/_latestVersion)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.4.20-blue.svg?logo=kotlin)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.4.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
 ![kmm](https://img.shields.io/badge/Multiplatform-Android%20iOS%20JS-blue)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue)](http://www.apache.org/licenses/LICENSE-2.0)
 
-Kotlin multiplatform logging library targetting Android, iOS, and JS.
+Kotlin multiplatform logging library targeting Android, iOS, and JS.
 
-## Features:
+## Features
 
 * very little overhead when logging is disabled. Building the message string and running the code to calculate it is not executed when disabled.
 * easy to disable logging in production/release builds
@@ -15,7 +16,7 @@ Kotlin multiplatform logging library targetting Android, iOS, and JS.
 * support for different loggers on each platform
 * no configuration necessary when using the builtin PlatformLogger
 
-### Setup
+## Setup
 
 You need to use at least version `1.4.21` of the kotlin multiplatform plugin. Place the following in the commonMain section.
 
@@ -32,10 +33,12 @@ sourceSets {
 ```
 build.gradle
 
-```kotlin
-commonMain {
-    dependencies {
-        api "org.lighthousegames:logging:$logging_version"
+```gradle
+sourceSets {
+    commonMain {
+        dependencies {
+            api "org.lighthousegames:logging:$logging_version"
+        }
     }
 }
 ```
@@ -64,7 +67,7 @@ class MyClass {
 With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and disabled for release builds. For JavaScript, logging is enabled by default for all levels.
 
 ### Log for release builds
-If logging is desired for release builds.
+If logging is desired for release builds. Use the supplied `PlatformLogger` and supply it a log level controller that is enabled for all log levels.
 
 ```kotlin
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(true)))
