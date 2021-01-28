@@ -6,7 +6,7 @@
 
 Kotlin multiplatform logging
 
-##Features:
+## Features:
 
 * very little overhead when logging is disabled. Building the message string and running the code to calculate it is not executed when disabled.
 * easy to disable logging in production/release builds
@@ -15,7 +15,7 @@ Kotlin multiplatform logging
 * support for different loggers on each platform
 * no configuration necessary when using the builtin PlatformLogger
 
-###Setup
+### Setup
 
 ```kotlin
 commonMain {
@@ -25,7 +25,7 @@ commonMain {
 }
 ```
 
-##Usage
+## Usage
 
 ```kotlin
 class MyClass {
@@ -43,15 +43,15 @@ class MyClass {
 }
 ```
 
-##Configuration
+## Configuration
 With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and disabled for release builds. For JavaScript, logging is enabled by default for all levels.
 
-###Log for release builds
+### Log for release builds
 ```kotlin
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(true)))
 ```
 
-###Log to another system such as Crashlytics
+### Log to another system such as Crashlytics
 Let's say we only want to send the more important logs to Crashlytics to give some context to crashes so we only want to log info level and above. 
 That can be easily done by by defining and adding in a logger to do that:
 
@@ -90,7 +90,7 @@ KmLogging.addLogger(CrashlyticsLogger())
 ``` 
 
 
-# Usage in iOS Swift 
+## Usage in iOS Swift 
 By default the kotlin multiplatform toolchain will not export all KmLogging classes and those that are will be prefaced with Logging. 
 So if you want to use classes from swift code you will need to direct the plugin to export the logging library in your build.gradle.kts:
 
