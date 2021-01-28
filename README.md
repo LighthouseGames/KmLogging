@@ -1,6 +1,6 @@
 # Kotlin Multiplatform Logging  <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin-logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Android_robot_2014.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Apple_iOS_logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="30">
 
-[![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label= JCenter)](https://bintray.com/lighthousegames/multiplatform/kmlogging/_latestVersion)
+[![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label=JCenter)](https://bintray.com/lighthousegames/multiplatform/kmlogging/_latestVersion)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.4.21-blue.svg?logo=kotlin)](http://kotlinlang.org)
 ![kmm](https://img.shields.io/badge/Multiplatform-Android%20iOS%20JS-blue)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue)](http://www.apache.org/licenses/LICENSE-2.0)
