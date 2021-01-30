@@ -17,4 +17,34 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Hello World!" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/log_debug"
+        android:text="log.debug"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/log_info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="100dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/log_info"
+        android:text="log.info"
+        app:layout_constraintStart_toEndOf="@id/log_debug"
+        app:layout_constraintEnd_toStartOf="@id/crash"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="100dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/crash"
+        android:text="Crash"
+        app:layout_constraintStart_toEndOf="@id/log_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="100dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

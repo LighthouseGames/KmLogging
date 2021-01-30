@@ -30,11 +30,11 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(project(":logging"))
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("com.google.android.material:material:1.2.1")
             }
         }
         val iosMain by getting
