@@ -42,7 +42,7 @@ android {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "0.7.0"
+extra["artifactVersion"] = "0.8.0"
 extra["libraryName"] = "Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "Kotlin Multiplatform Logging"
 extra["gitUrl"] = "https://gitlab.com/olekdia/common/libraries/multiplatform-common"

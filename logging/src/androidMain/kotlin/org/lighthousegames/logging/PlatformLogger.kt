@@ -4,27 +4,26 @@ import android.util.Log
 
 //private val baseLoggingClassName = object {}::class.java.enclosingClass?.name ?: "PlatformLogger"
 
-actual class PlatformLogger actual constructor(logLevel: LogLevelController) : Logger,
-    LogLevelController by logLevel {
+actual open class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, LogLevelController by logLevel {
 
-    actual override fun verbose(tag: String?, msg: String) {
-        Log.v(tag ?: "", msg)
+    actual override fun verbose(tag: String, msg: String) {
+        Log.v(tag, msg)
     }
 
-    actual override fun debug(tag: String?, msg: String) {
-        Log.d(tag ?: "", msg)
+    actual override fun debug(tag: String, msg: String) {
+        Log.d(tag, msg)
     }
 
-    actual override fun info(tag: String?, msg: String) {
-        Log.i(tag ?: "", msg)
+    actual override fun info(tag: String, msg: String) {
+        Log.i(tag, msg)
     }
 
-    actual override fun warn(tag: String?, msg: String, t: Throwable?) {
-        Log.w(tag ?: "", msg, t)
+    actual override fun warn(tag: String, msg: String, t: Throwable?) {
+        Log.w(tag, msg, t)
     }
 
-    actual override fun error(tag: String?, msg: String, t: Throwable?) {
-        Log.e(tag ?: "", msg, t)
+    actual override fun error(tag: String, msg: String, t: Throwable?) {
+        Log.e(tag, msg, t)
     }
 
     actual fun createTag(): String {

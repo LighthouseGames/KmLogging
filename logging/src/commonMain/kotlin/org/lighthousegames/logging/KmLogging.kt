@@ -11,6 +11,7 @@ object KmLogging {
     private var isLoggingInfo = true
     private var isLoggingWarning = true
     private var isLoggingError = true
+    private var logLevel: LogLevel? = null
 
     init {
         loggers.add(PlatformLogger(FixedLogLevel(Platform.isDebug)))
@@ -23,6 +24,7 @@ object KmLogging {
         this.loggers.clear()
         for (logger in loggers) {
             this.loggers.add(logger)
+            setLogLevelFor(logger)
         }
         setupLoggingFlags()
     }
@@ -39,7 +41,34 @@ object KmLogging {
      */
     fun addLogger(logger: Logger) {
         loggers.add(logger)
+        setLogLevelFor(logger)
         setupLoggingFlags()
+    }
+
+    private fun setLogLevelFor(logger: Logger) {
+        val currentLevel = logLevel
+        if (currentLevel != null) {
+            if (logger is MutableLogLevelController)
+                logger.setLogLevel(currentLevel)
+            else if (logger is PlatformLogger && logger.logLevel is MutableLogLevelController)
+                logger.logLevel.setLogLevel(currentLevel)
+        }
+    }
+
+    /**
+     * Convenience method that sets the log level of all loggers whose LogLevelController is a MutableLogLevelController.
+     * Any logger that is added after this setting will also get set to this log level.
+     * Setting the level to null will remove the log level setting and all current loggers and those subsequently added
+     * will not have its log level changed.
+     */
+    fun setLogLevel(level: LogLevel?) {
+        logLevel = level
+        if (level != null) {
+            for (logger in loggers) {
+                setLogLevelFor(logger)
+            }
+            setupLoggingFlags()
+        }
     }
 
     /**
@@ -72,35 +101,35 @@ object KmLogging {
     fun isLoggingWarning() = isLoggingWarning
     fun isLoggingError() = isLoggingError
 
-    fun verbose(tag: String?, msg: String) {
+    fun verbose(tag: String, msg: String) {
         for (logger in loggers) {
             if (logger.isLoggingVerbose())
                 logger.verbose(tag, msg)
         }
     }
 
-    fun debug(tag: String?, msg: String) {
+    fun debug(tag: String, msg: String) {
         for (logger in loggers) {
             if (logger.isLoggingDebug())
                 logger.debug(tag, msg)
         }
     }
 
-    fun info(tag: String?, msg: String) {
+    fun info(tag: String, msg: String) {
         for (logger in loggers) {
             if (logger.isLoggingInfo())
                 logger.info(tag, msg)
         }
     }
 
-    fun warn(tag: String?, msg: String, t: Throwable? = null) {
+    fun warn(tag: String, msg: String, t: Throwable? = null) {
         for (logger in loggers) {
             if (logger.isLoggingWarning())
                 logger.warn(tag, msg, t)
         }
     }
 
-    fun error(tag: String?, msg: String, t: Throwable? = null) {
+    fun error(tag: String, msg: String, t: Throwable? = null) {
         for (logger in loggers) {
             if (logger.isLoggingError())
                 logger.error(tag, msg, t)

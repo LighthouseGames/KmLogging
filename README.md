@@ -10,11 +10,11 @@ Kotlin multiplatform logging library targeting Android, iOS, and JS.
 ## Features
 
 * No configuration necessary. Automatically uses the builtin PlatformLogger which uses Log in Android, os_log in iOS, and console in JS. By default logging is enabled in debug builds and disabled in release builds
-* Very little overhead when logging is disabled. When disabled, only an if condition of a boolean variable is evaluated. Building the message string and running the code to calculate it is not executed.
-* Can  easily add additional logging such as Crashlytics or remotely configurable logging
+* High performance. Very little overhead when logging is disabled. When disabled, only an if condition of a boolean variable is evaluated. Building the message string and running the code to calculate it is not executed.
+* Can add additional loggers such as Crashlytics
+* Can provide custom/configurable log level control on builtin PlatformLogger such as changing the log level from Remote Config
 * Each logger can log at a different level.
 * All platforms can use the same set of loggers by configuring in common code or can use different ones on each platform by configuring in platform specific code.
-
 
 ## Setup
 
@@ -73,6 +73,18 @@ If logging is desired for release builds. Use the supplied `PlatformLogger` and 
 
 ```kotlin
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(true)))
+```
+
+### Changing log levels after setup
+If log levels are desired to be changed after they are setup then a `MutableLogLevelController` such as `DynamicLogLevel` should be used. 
+The following example will change the `PlatformLogger` to allow it to have its log level changed at runtime. 
+In the example below the level initially is set to Info level and then at some time later it is changed to Verbose level.
+
+```kotlin
+KmLogging.setLogLevel(LogLevel.Info)
+KmLogging.setLoggers(PlatformLogger(DynamicLogLevel))
+
+KmLogging.setLogLevel(LogLevel.Verbose)
 ```
 
 Notes: 

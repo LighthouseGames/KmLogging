@@ -4,10 +4,9 @@ import kotlinx.cinterop.ptr
 import platform.Foundation.NSThread
 import platform.darwin.*
 
-actual class PlatformLogger actual constructor(logLevel: LogLevelController) : Logger,
-    LogLevelController by logLevel {
+actual class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, LogLevelController by logLevel {
 
-    actual override fun verbose(tag: String?, msg: String) {
+    actual override fun verbose(tag: String, msg: String) {
         _os_log_internal(
             __dso_handle.ptr,
             OS_LOG_DEFAULT,
@@ -16,11 +15,11 @@ actual class PlatformLogger actual constructor(logLevel: LogLevelController) : L
         )
     }
 
-    actual override fun debug(tag: String?, msg: String) {
+    actual override fun debug(tag: String, msg: String) {
         _os_log_internal(__dso_handle.ptr, OS_LOG_DEFAULT, OS_LOG_TYPE_INFO, message("D", tag, msg))
     }
 
-    actual override fun info(tag: String?, msg: String) {
+    actual override fun info(tag: String, msg: String) {
         _os_log_internal(
             __dso_handle.ptr,
             OS_LOG_DEFAULT,
@@ -29,7 +28,7 @@ actual class PlatformLogger actual constructor(logLevel: LogLevelController) : L
         )
     }
 
-    actual override fun warn(tag: String?, msg: String, t: Throwable?) {
+    actual override fun warn(tag: String, msg: String, t: Throwable?) {
         _os_log_internal(
             __dso_handle.ptr,
             OS_LOG_DEFAULT,
@@ -38,7 +37,7 @@ actual class PlatformLogger actual constructor(logLevel: LogLevelController) : L
         )
     }
 
-    actual override fun error(tag: String?, msg: String, t: Throwable?) {
+    actual override fun error(tag: String, msg: String, t: Throwable?) {
         _os_log_internal(
             __dso_handle.ptr,
             OS_LOG_DEFAULT,
@@ -47,8 +46,8 @@ actual class PlatformLogger actual constructor(logLevel: LogLevelController) : L
         )
     }
 
-    private fun message(level: String, tag: String?, msg: String, t: Throwable? = null): String {
-        val str = if (tag == null) "$level: $msg" else "$level/$tag: $msg"
+    private fun message(level: String, tag: String, msg: String, t: Throwable? = null): String {
+        val str = if (tag.isEmpty()) "$level: $msg" else "$level/$tag: $msg"
         return if (t == null) str else "$str $t"
     }
 
