@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
-    id("org.jetbrains.dokka")
+//    id("org.jetbrains.dokka")
 }
 
 kotlin {
@@ -42,7 +42,7 @@ android {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "0.9.0"
+extra["artifactVersion"] = "0.9.1"
 extra["libraryName"] = "Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "Kotlin Multiplatform Logging"
 extra["gitUrl"] = "https://gitlab.com/olekdia/common/libraries/multiplatform-common"
