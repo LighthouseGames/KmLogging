@@ -2,7 +2,7 @@ package org.lighthousegames.logging
 
 import kotlin.js.Date
 
-actual class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, LogLevelController by logLevel {
+actual class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, TagProvider, LogLevelController by logLevel {
 
     actual override fun verbose(tag: String, msg: String) {
         console.log(preface("V", tag), msg)
@@ -24,8 +24,8 @@ actual class PlatformLogger actual constructor(actual val logLevel: LogLevelCont
         console.error(preface("E", tag), msg, t)
     }
 
-    actual fun createTag(): String {
-        return ""
+    actual override fun createTag(fromClass: String?): Pair<String, String> {
+        return Pair("", "")
     }
 
     private fun preface(level: String, tag: String): String {

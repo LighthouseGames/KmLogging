@@ -1,7 +1,6 @@
 package org.lighthousegames.sample
 
 import android.app.Application
-import android.util.Log
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.get
 import com.google.firebase.remoteconfig.ktx.remoteConfig

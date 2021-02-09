@@ -20,11 +20,22 @@ kotlin {
             }
         }
     }
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = "1.8"
+        }
+    }
 
     sourceSets {
         val commonMain by getting
 
         val androidMain by getting
+
+        val jvmMain by getting {
+            dependencies {
+                implementation("org.slf4j:slf4j-api:1.7.30")
+            }
+        }
 
         val iosMain by getting
 
@@ -42,7 +53,7 @@ android {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "0.9.1"
+extra["artifactVersion"] = "1.0.0"
 extra["libraryName"] = "Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "Kotlin Multiplatform Logging"
 extra["gitUrl"] = "https://gitlab.com/olekdia/common/libraries/multiplatform-common"

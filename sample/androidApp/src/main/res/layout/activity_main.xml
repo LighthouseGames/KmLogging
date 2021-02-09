@@ -21,18 +21,46 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/log_debug"
-        android:text="log.debug"
+        android:padding="10dp"
+        android:minWidth="10dp"
+        android:text="debug"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/log_info"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="100dp" />
 
     <Button
+        android:id="@+id/log_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/log_info"
-        android:text="log.info"
-        app:layout_constraintStart_toEndOf="@id/log_debug"
+        android:layout_marginBottom="100dp"
+        android:padding="10dp"
+        android:minWidth="10dp"
+        android:text="info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/log_warn"
+        app:layout_constraintStart_toEndOf="@id/log_debug" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/log_warn"
+        android:padding="10dp"
+        android:minWidth="10dp"
+        android:text="warn"
+        app:layout_constraintStart_toEndOf="@id/log_info"
+        app:layout_constraintEnd_toStartOf="@id/log_error"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="100dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/log_error"
+        android:padding="10dp"
+        android:minWidth="10dp"
+        android:text="error"
+        app:layout_constraintStart_toEndOf="@id/log_warn"
         app:layout_constraintEnd_toStartOf="@id/crash"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="100dp" />
@@ -41,8 +69,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/crash"
+        android:padding="10dp"
+        android:minWidth="10dp"
         android:text="Crash"
-        app:layout_constraintStart_toEndOf="@id/log_info"
+        app:layout_constraintStart_toEndOf="@id/log_error"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="100dp" />

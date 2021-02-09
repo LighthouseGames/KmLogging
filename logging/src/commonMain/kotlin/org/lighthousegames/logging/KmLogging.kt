@@ -6,15 +6,16 @@ import kotlin.native.concurrent.ThreadLocal
 object KmLogging {
     private val loggers = ArrayList<Logger>()
 
-    private var isLoggingVerbose = true
-    private var isLoggingDebug = true
-    private var isLoggingInfo = true
-    private var isLoggingWarning = true
-    private var isLoggingError = true
+    var isLoggingVerbose = true
+    var isLoggingDebug = true
+    var isLoggingInfo = true
+    var isLoggingWarning = true
+    var isLoggingError = true
     private var logLevel: LogLevel? = null
+    var logFactory: LogFactory? = null
 
     init {
-        loggers.add(PlatformLogger(FixedLogLevel(Platform.isDebug)))
+        loggers.add(PlatformLogger(FixedLogLevel(Platform::isDebug)))
     }
 
     /**
@@ -95,12 +96,6 @@ object KmLogging {
         }
     }
 
-    fun isLoggingVerbose() = isLoggingVerbose
-    fun isLoggingDebug() = isLoggingDebug
-    fun isLoggingInfo() = isLoggingInfo
-    fun isLoggingWarning() = isLoggingWarning
-    fun isLoggingError() = isLoggingError
-
     fun verbose(tag: String, msg: String) {
         for (logger in loggers) {
             if (logger.isLoggingVerbose())
@@ -136,11 +131,11 @@ object KmLogging {
         }
     }
 
-    fun createTag(): String {
+    fun createTag(fromClass: String? = null): Pair<String, String> {
         for (logger in loggers) {
-            if (logger is PlatformLogger)
-                return logger.createTag()
+            if (logger is TagProvider)
+                return logger.createTag(fromClass)
         }
-        return ""
+        return Pair("", "")
     }
 }

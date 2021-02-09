@@ -4,7 +4,7 @@ import kotlinx.cinterop.ptr
 import platform.Foundation.NSThread
 import platform.darwin.*
 
-actual class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, LogLevelController by logLevel {
+actual class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, TagProvider, LogLevelController by logLevel {
 
     actual override fun verbose(tag: String, msg: String) {
         _os_log_internal(
@@ -51,21 +51,23 @@ actual class PlatformLogger actual constructor(actual val logLevel: LogLevelCont
         return if (t == null) str else "$str $t"
     }
 
-    actual fun createTag(): String {
+    actual override fun createTag(fromClass: String?): Pair<String, String> {
         val stack = NSThread.callStackSymbols
         var clsName = ""
         stack.forEachIndexed { index, t ->
             val stackEntry = t.toString()
-            val tag = getClassName(stackEntry)
 //            println("tag: $tag stack: $stackEntry")
 
             if (stackEntry.contains("KmLog") && stack.size > index) {
                 val nextEntry = stack[index + 1].toString()
                 if (!nextEntry.contains("KmLog"))
-                    clsName = getClassName(nextEntry)
+                    clsName = nextEntry
+            }
+            if (fromClass != null && stackEntry.contains(fromClass) && stack.size > index) {
+                clsName = stack[index + 1].toString()
             }
         }
-        return clsName
+        return Pair(getClassName(clsName), clsName)
     }
 
     private fun getClassName(stackEntry: String): String {

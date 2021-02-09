@@ -13,4 +13,4 @@ pluginManagement {
 }
 
 include(":logging")
-include(":sample:shared", ":sample:androidApp", ":sample:webApp")
+include(":sample:shared", ":sample:androidApp", ":sample:webApp", ":sample:jvmApp")

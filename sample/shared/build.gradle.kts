@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform")
@@ -25,6 +26,7 @@ kotlin {
             }
         }
     }
+    jvm()
 
     sourceSets {
         val commonMain by getting {
@@ -39,7 +41,12 @@ kotlin {
         }
         val iosMain by getting
         val jsMain by getting
+        val jvmMain by getting
     }
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 android {
