@@ -10,8 +10,8 @@ Kotlin multiplatform logging library targeting Android, iOS, JVM and JS.
 ## Features
 
 * Uses the native logging facility on each platform: Log on Android, os_log on iOS, SLF4J on JVM and console on JavaScript.
-* No configuration necessary. By default the PlatformLogger is enabled in debug builds and disabled in release builds.
 * High performance. Very little overhead when logging is disabled. When disabled, only one boolean is evaluated and no function calls. Building the message string and running the code to calculate it is not executed.
+* No configuration necessary. By default the PlatformLogger is enabled in debug builds and disabled in release builds.
 * Can add additional loggers such as Crashlytics or replace/extend the builtin PlatformLogger with something else
 * Can provide custom/configurable log level control on builtin PlatformLogger such as changing the log level from Remote Config
 * Each logger can log at a different level.
