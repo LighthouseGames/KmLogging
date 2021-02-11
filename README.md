@@ -88,6 +88,7 @@ KmLogging.setLoggers(PlatformLogger(FixedLogLevel(true)))
 ```
 
 ### Changing log levels after setup
+
 If log levels are desired to be changed after they are setup then a `MutableLogLevelController` such as `DynamicLogLevel` should be used. 
 The following example will change the `PlatformLogger` to allow it to have its log level changed at runtime. 
 In the example below the level initially is set to Info level and then at some time later it is changed to Verbose level.
