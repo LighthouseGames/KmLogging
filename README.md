@@ -77,6 +77,7 @@ class MyClass {
 ```
 
 ## Configuration
+
 With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and disabled for release builds. For JavaScript and JVM, logging is enabled by default for all levels.
 
 ### Turn on logging for release builds
