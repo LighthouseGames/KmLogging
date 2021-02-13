@@ -1,6 +1,6 @@
 # Kotlin Multiplatform Logging  <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin-logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Android_robot_2014.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Apple_iOS_logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/OpenJDK_logo.svg" width="80">
 
-[![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label=JCenter)](https://bintray.com/lighthousegames/multiplatform/kmlogging/_latestVersion)
+[![ver](https://img.shields.io/maven-central/v/org.lighthousegames/logging)](todo)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.4.30-blue.svg?logo=kotlin)](http://kotlinlang.org)
 ![kmm](https://img.shields.io/badge/Multiplatform-Android%20iOS%20JS%20JVM-blue)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue)](http://www.apache.org/licenses/LICENSE-2.0)
@@ -19,7 +19,8 @@ Kotlin multiplatform logging library targeting Android, iOS, JVM and JS.
 
 ## Setup
 
-The library is available from the JCenter repository with the current version of ![ver](https://img.shields.io/bintray/v/lighthousegames/multiplatform/kmlogging?color=blue&label=JCenter)
+The library is available from the Maven Central repository with the current version of ![ver](https://img.shields.io/maven-central/v/org.lighthousegames/logging)
+Note: version 1.0.0 is also on JCenter. However, since JCenter is shutting down soon that is the last version published. All versions after 1.0 will only be published to Maven Central.
 You should use at least version `1.4.30` of the kotlin multiplatform plugin. Place the following in the commonMain section.
 
 build.gradle.kts
@@ -75,7 +76,21 @@ class MyClass {
     }
 }
 ```
+## Performance
 
+Why does KmLogging have the highest performance of all the logging api's? The reason for the claim is mostly based on how much overhead it has when disabled i.e. production/release builds.
+In release builds the lambda function supplied to each logging function is not evaluated if that logging level is not enabled. The check if it is enabled or not is just a boolean.
+So the only cost of the logging code that is shipped in production builds is one test of a boolean variable. This means that you can add and leave a lot of logging
+in your code with paying performance penalties in production.
+
+Also, the tag (class name) is only calculated one time per class when the `val log = logging()` is executed as opposed to some other logging libraries that calculate it on every log call.
+Calculating the tag is expensive and even if it is only done for debug builds it will still slow the performance in debug builds. KmLogging chose to eliminate this performance drain by 
+asking the developer to add an additional line of code `val log = logging()` to each class so this cost is only paid one time per class.
+
+Note: if any logger has a given log level enabled then the lambda for that log level will be evaluated. Suppose you have the default configuration and you added a Crashlytics logger that 
+logs at info, warn and error levels. This would mean that the lambda for info, warn and error levels will be evaluated because the Crashlytics logger needs it. So in this scenario
+you would want to have minimal info logging code so as to not slow down the application at runtime and put most of the logging at verbose and debug levels where it will not be evaluated in release builds.
+    
 ## Configuration
 
 With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and disabled for release builds. For JavaScript and JVM, logging is enabled by default for all levels.

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
-//    id("org.jetbrains.dokka")
+    id("org.jetbrains.dokka")
 }
 
 kotlin {
@@ -52,10 +52,19 @@ android {
     }
 }
 
+tasks {
+    create<Jar>("javadocJar") {
+        dependsOn(dokkaHtml)
+        archiveClassifier.set("javadoc")
+        from(dokkaHtml.get().outputDirectory)
+    }
+}
+
 extra["artifactId"] = "kmlogging"
 extra["artifactVersion"] = "1.0.0"
 extra["libraryName"] = "Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "Kotlin Multiplatform Logging"
-extra["gitUrl"] = "https://gitlab.com/olekdia/common/libraries/multiplatform-common"
+extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"
 
 apply(from = "publish.gradle.kts")
+

@@ -12,6 +12,7 @@ kotlin {
         binaries {
             framework {
                 baseName = "shared"
+//                export("org.lighthousegames:logging:1.0.0")
                 export(project(":logging"))
             }
         }
@@ -31,6 +32,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+//                api("org.lighthousegames:logging:1.0.0")
                 api(project(":logging"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
             }
