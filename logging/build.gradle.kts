@@ -54,16 +54,16 @@ android {
 
 tasks {
     create<Jar>("javadocJar") {
-        dependsOn(dokkaHtml)
         archiveClassifier.set("javadoc")
+        dependsOn(dokkaHtml)
         from(dokkaHtml.get().outputDirectory)
     }
 }
 
 extra["artifactId"] = "kmlogging"
 extra["artifactVersion"] = "1.0.0"
-extra["libraryName"] = "Kotlin Multiplatform Logging"
-extra["libraryDescription"] = "Kotlin Multiplatform Logging"
+extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
+extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"
 
 apply(from = "publish.gradle.kts")

@@ -3,15 +3,20 @@ import org.gradle.api.publish.PublishingExtension
 apply(plugin = "maven-publish")
 apply(plugin = "signing")
 
+// defined in user's global gradle.properties
 val sonatype_username: String by project
 val sonatype_password: String by project
 
-val orgName: String by project
+// defined in project's gradle.properties
 val groupId: String by project
 val licenseName: String by project
 val licenseUrl: String by project
-val developerName: String by project
-val developerId: String by project
+// optional properties
+val orgId: String? by project
+val orgName: String? by project
+val orgUrl: String? by project
+val developerName: String? by project
+val developerId: String? by project
 
 val artifactId: String by extra
 val artifactVersion: String by extra
@@ -30,7 +35,9 @@ configure<PublishingExtension> {
             artifactId = artifactId
             version = artifactVersion
 
-            artifact(tasks["javadocJar"])
+            if (name == "jvm") {
+                artifact(tasks["javadocJar"])
+            }
 
             pom {
                 name.set(libraryName)
@@ -47,13 +54,27 @@ configure<PublishingExtension> {
                     url.set(gitUrl)
                 }
                 developers {
-                    developer {
-                        id.set(developerId)
-                        name.set(developerName)
+                    if (!developerId.isNullOrEmpty()) {
+                        developer {
+                            id.set(developerId)
+                            name.set(developerName)
+                        }
+                    }
+                    if (!orgId.isNullOrEmpty()) {
+                        developer {
+                            id.set(orgId)
+                            name.set(orgName)
+                            organization.set(orgName)
+                            organizationUrl.set(orgUrl)
+                        }
                     }
                 }
-                organization {
-                    name.set(orgName)
+                if (!orgName.isNullOrEmpty()) {
+                    organization {
+                        name.set(orgName)
+                        if (!orgUrl.isNullOrEmpty())
+                            url.set(orgUrl)
+                    }
                 }
             }
         }
