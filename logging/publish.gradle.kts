@@ -4,8 +4,8 @@ apply(plugin = "maven-publish")
 apply(plugin = "signing")
 
 // defined in user's global gradle.properties
-val sonatype_username: String by project
-val sonatype_password: String by project
+val sonatype_username: String? by project
+val sonatype_password: String? by project
 
 // defined in project's gradle.properties
 val groupId: String by project
