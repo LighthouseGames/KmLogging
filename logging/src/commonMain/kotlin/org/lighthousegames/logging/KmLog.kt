@@ -118,8 +118,8 @@ open class KmLog(tag: String) {
 
 fun logging(tag: String? = null): KmLog {
     val (tagCalculated, className) = KmLogging.createTag("KmLog")
-    val tag = tag ?: tagCalculated
-    return KmLogging.logFactory?.createKmLog(tag, className) ?: KmLog(tag)
+    val t = tag ?: tagCalculated
+    return logFactory.get()?.createKmLog(t, className) ?: KmLog(t)
 }
 
 

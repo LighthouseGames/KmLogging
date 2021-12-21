@@ -4,6 +4,7 @@ import shared
 let log = KmLog(tag: "ContentView")
 
 func greet() -> String {
+//    KmLogging.shared.setLogLevel(level: LogLevel.debug)
     log.debug { "greet()" }
     return Greeting().greeting()
 }

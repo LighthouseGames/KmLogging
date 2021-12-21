@@ -10,14 +10,8 @@ kotlin {
     }
     ios {
     }
-    js(LEGACY) {
+    js(BOTH) {
         browser {
-            testTask {
-                useKarma {
-                    useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
-                }
-            }
         }
     }
     jvm {
@@ -27,7 +21,11 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation("co.touchlab:stately-concurrency:1.1.10")
+            }
+        }
 
         val androidMain by getting
 
@@ -44,10 +42,10 @@ kotlin {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(14)
+        minSdk = 14
         consumerProguardFiles("proguard.txt")
     }
 }
@@ -61,7 +59,7 @@ tasks {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "1.0.0"
+extra["artifactVersion"] = "1.1.0"
 extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"

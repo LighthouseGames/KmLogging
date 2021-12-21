@@ -5,22 +5,19 @@ class Log {
     companion object {
 
         @JvmStatic
-        @JvmOverloads
-        fun v(tag: String?, msg: String, t: Throwable? = null) {
+        fun v(tag: String?, msg: String) {
             if (KmLogging.isLoggingVerbose)
                 KmLogging.verbose(tag.toString(), msg)
         }
 
         @JvmStatic
-        @JvmOverloads
-        fun d(tag: String?, msg: String, t: Throwable? = null) {
+        fun d(tag: String?, msg: String) {
             if (KmLogging.isLoggingDebug)
                 KmLogging.debug(tag.toString(), msg)
         }
 
         @JvmStatic
-        @JvmOverloads
-        fun i(tag: String?, msg: String, t: Throwable? = null) {
+        fun i(tag: String?, msg: String) {
             if (KmLogging.isLoggingInfo)
                 KmLogging.info(tag.toString(), msg)
         }

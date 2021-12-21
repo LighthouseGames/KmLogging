@@ -22,6 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.window = window
             window.makeKeyAndVisible()
         }
+
+        TestIOS().logOnThread()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

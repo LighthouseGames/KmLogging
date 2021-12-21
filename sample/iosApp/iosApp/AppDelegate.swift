@@ -9,6 +9,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         log.info { "application() override" }
+//        KmLogging.shared.setLogLevel(level: LogLevel.off)
         log.info {
             let version = "\(Platform().name) \(Platform().versionName) \(Platform().version)"
             return "debug: \(Platform().isDebug) \(version)"

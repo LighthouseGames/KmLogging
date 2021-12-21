@@ -12,19 +12,13 @@ kotlin {
         binaries {
             framework {
                 baseName = "shared"
-//                export("org.lighthousegames:logging:1.0.0")
-                export(project(":logging"))
+                export("org.lighthousegames:logging:1.1.0")
+//                export(project(":logging"))
             }
         }
     }
     js(LEGACY) {
         browser {
-            testTask {
-                useKarma {
-                    useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
-                }
-            }
         }
     }
     jvm()
@@ -32,16 +26,20 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-//                api("org.lighthousegames:logging:1.0.0")
-                api(project(":logging"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+                api("org.lighthousegames:logging:1.1.0")
+//                api(project(":logging"))
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
             }
         }
         val androidMain by getting {
             dependencies {
             }
         }
-        val iosMain by getting
+        val iosMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt")
+            }
+        }
         val jsMain by getting
         val jvmMain by getting
     }
@@ -52,11 +50,11 @@ tasks.withType<KotlinCompile> {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdk = 31
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
+        minSdk = 21
+        targetSdk = 31
     }
 }
 

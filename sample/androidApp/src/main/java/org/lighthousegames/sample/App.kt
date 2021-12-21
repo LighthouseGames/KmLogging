@@ -8,6 +8,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.lighthousegames.logging.*
 
 class App : Application() {
@@ -17,11 +18,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        KmLogging.setLogLevel(LogLevel.Verbose)
-        KmLogging.setLoggers(PlatformLogger(DynamicLogLevel), CrashlyticsLogger())
-        log.info { "onCreate" }
+        KmLogging.setLoggers(PlatformLogger(VariableLogLevel(LogLevel.Verbose)), CrashlyticsLogger())
+        log.info { "onCreate ${Thread.currentThread()}" }
 
         setupRemoteConfig()
+        logOnThread()
     }
 
     private fun setupRemoteConfig() {
@@ -34,7 +35,7 @@ class App : Application() {
                 if (task.isSuccessful) {
                     val updated = task.result
                     val logLevel = remoteConfig["log_level"].asString()
-                    Log.i("App", "log_level: $logLevel")
+                    Log.i("App", "log_level: $logLevel ${Thread.currentThread()}")
                     val level = LogLevel.valueOf(logLevel)
                     KmLogging.setLogLevel(level)
                     log.i { "Config params updated: $updated. LogLevel: $level" }
@@ -42,6 +43,19 @@ class App : Application() {
                     log.w { "Fetch failed" }
                 }
             }
+        }
+    }
+
+    private fun logOnThread() {
+        log.d { "logOnThread ${Thread.currentThread()}" }
+        runBlocking {
+
+        }
+        GlobalScope.launch(Dispatchers.IO) {
+            log.d { "logOnThread coroutine: ${Thread.currentThread()} $this ${this.coroutineContext}" }
+        }
+        GlobalScope.launch(Dispatchers.Main) {
+            log.d { "logOnThread coroutine main ${Thread.currentThread()} $this ${this.coroutineContext}" }
         }
     }
 }

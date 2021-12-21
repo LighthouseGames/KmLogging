@@ -3,9 +3,7 @@ package org.lighthousegames.logging
 actual open class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, TagProvider, LogLevelController by logLevel {
 
     init {
-        if (KmLogging.logFactory != null)
-            println("WARNING: existing logFactory is being overwritten by JVM PlatformLogger. Was ${KmLogging.logFactory}")
-        KmLogging.logFactory = Slf4jLogFactory()
+        KmLogging.setLogFactory(Slf4jLogFactory())
     }
 
     // Note: these methods don't do anything because the logging output happens from Slf4Log class

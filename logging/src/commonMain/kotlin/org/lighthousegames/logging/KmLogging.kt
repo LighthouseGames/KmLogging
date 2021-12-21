@@ -1,75 +1,72 @@
 package org.lighthousegames.logging
 
+import co.touchlab.stately.concurrency.AtomicReference
+import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.ThreadLocal
+
+@SharedImmutable
+private val loggers: AtomicReference<List<Logger>> = AtomicReference(listOf<Logger>(PlatformLogger(FixedLogLevel(Platform::isDebug))))
+
+@SharedImmutable
+internal val logFactory: AtomicReference<LogFactory?> = AtomicReference(null)
 
 @ThreadLocal
 object KmLogging {
-    private val loggers = ArrayList<Logger>()
-
     var isLoggingVerbose = true
     var isLoggingDebug = true
     var isLoggingInfo = true
     var isLoggingWarning = true
     var isLoggingError = true
-    private var logLevel: LogLevel? = null
-    var logFactory: LogFactory? = null
 
     init {
-        loggers.add(PlatformLogger(FixedLogLevel(Platform::isDebug)))
+        setupLoggingFlags()
     }
 
     /**
      * Clears the existing loggers and adds in the new ones.
      */
     fun setLoggers(vararg loggers: Logger) {
-        this.loggers.clear()
+        val list = ArrayList<Logger>(loggers.size)
         for (logger in loggers) {
-            this.loggers.add(logger)
-            setLogLevelFor(logger)
+            list.add(logger)
         }
+        org.lighthousegames.logging.loggers.set(list)
         setupLoggingFlags()
+    }
+
+    fun setLogFactory(factory: LogFactory?) {
+        logFactory.set(factory)
     }
 
     /**
      * Removes all loggers. For use by native platforms that cannot use the vararg setLoggers.
      */
     fun clear() {
-        loggers.clear()
+        loggers.set(emptyList())
     }
 
     /**
      * Adds loggers. For use by native platforms that cannot use the vararg setLoggers.
      */
     fun addLogger(logger: Logger) {
-        loggers.add(logger)
-        setLogLevelFor(logger)
+        val list = ArrayList(loggers.get())
+        list.add(logger)
+        loggers.set(list)
         setupLoggingFlags()
     }
 
-    private fun setLogLevelFor(logger: Logger) {
-        val currentLevel = logLevel
-        if (currentLevel != null) {
-            if (logger is MutableLogLevelController)
-                logger.setLogLevel(currentLevel)
-            else if (logger is PlatformLogger && logger.logLevel is MutableLogLevelController)
-                logger.logLevel.setLogLevel(currentLevel)
-        }
-    }
-
-    /**
-     * Convenience method that sets the log level of all loggers whose LogLevelController is a MutableLogLevelController.
-     * Any logger that is added after this setting will also get set to this log level.
-     * Setting the level to null will remove the log level setting and all current loggers and those subsequently added
-     * will not have its log level changed.
+    /*
+     * Convenience method that sets the log level of the PlatformLogger if there is one.
      */
-    fun setLogLevel(level: LogLevel?) {
-        logLevel = level
-        if (level != null) {
-            for (logger in loggers) {
-                setLogLevelFor(logger)
+    fun setLogLevel(level: LogLevel) {
+        val list = ArrayList(loggers.get())
+        list.forEachIndexed { index, logger ->
+            if (logger is PlatformLogger) {
+                list[index] = PlatformLogger(VariableLogLevel(level))
             }
-            setupLoggingFlags()
         }
+        loggers.set(list)
+        setupLoggingFlags()
     }
 
     /**
@@ -82,7 +79,7 @@ object KmLogging {
         isLoggingInfo = false
         isLoggingWarning = false
         isLoggingError = false
-        for (logger in loggers) {
+        for (logger in loggers.get()) {
             if (logger.isLoggingVerbose())
                 isLoggingVerbose = true
             if (logger.isLoggingDebug())
@@ -97,42 +94,42 @@ object KmLogging {
     }
 
     fun verbose(tag: String, msg: String) {
-        for (logger in loggers) {
+        for (logger in loggers.get()) {
             if (logger.isLoggingVerbose())
                 logger.verbose(tag, msg)
         }
     }
 
     fun debug(tag: String, msg: String) {
-        for (logger in loggers) {
+        for (logger in loggers.get()) {
             if (logger.isLoggingDebug())
                 logger.debug(tag, msg)
         }
     }
 
     fun info(tag: String, msg: String) {
-        for (logger in loggers) {
+        for (logger in loggers.get()) {
             if (logger.isLoggingInfo())
                 logger.info(tag, msg)
         }
     }
 
     fun warn(tag: String, msg: String, t: Throwable? = null) {
-        for (logger in loggers) {
+        for (logger in loggers.get()) {
             if (logger.isLoggingWarning())
                 logger.warn(tag, msg, t)
         }
     }
 
     fun error(tag: String, msg: String, t: Throwable? = null) {
-        for (logger in loggers) {
+        for (logger in loggers.get()) {
             if (logger.isLoggingError())
                 logger.error(tag, msg, t)
         }
     }
 
     fun createTag(fromClass: String? = null): Pair<String, String> {
-        for (logger in loggers) {
+        for (logger in loggers.get()) {
             if (logger is TagProvider)
                 return logger.createTag(fromClass)
         }

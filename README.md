@@ -1,4 +1,4 @@
-# Kotlin Multiplatform Logging  <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Kotlin-logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/d/db/Android_robot_2014.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Apple_iOS_logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/OpenJDK_logo.svg" width="80">
+# Kotlin Multiplatform Logging  <img src="https://upload.wikimedia.org/wikipedia/commons/0/06/Kotlin_Icon.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/66/Apple_iOS_logo.svg" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" width="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/OpenJDK_logo.svg" width="80">
 
 [![ver](https://img.shields.io/maven-central/v/org.lighthousegames/logging)](todo)
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.4.30-blue.svg?logo=kotlin)](http://kotlinlang.org)
@@ -19,9 +19,10 @@ Kotlin multiplatform logging library targeting Android, iOS, JVM and JS.
 
 ## Setup
 
-The library is available from the Maven Central repository with the current version of ![ver](https://img.shields.io/maven-central/v/org.lighthousegames/logging)
-Note: version 1.0.0 is also on JCenter. However, since JCenter is shutting down soon that is the last version published. All versions after 1.0 will only be published to Maven Central.
-You should use at least version `1.4.30` of the kotlin multiplatform plugin. Place the following in the commonMain section.
+The library is available from the Maven Central repository with the current version
+of ![ver](https://img.shields.io/maven-central/v/org.lighthousegames/logging)
+You should use at least version `1.5.30` of the kotlin multiplatform plugin. Place the following in
+the commonMain section.
 
 build.gradle.kts
 
@@ -76,44 +77,59 @@ class MyClass {
     }
 }
 ```
+
 ## Performance
 
-Why does KmLogging have the highest performance of all the logging api's? The reason for the claim is mostly based on how much overhead it has when disabled i.e. production/release builds.
-In release builds the lambda function supplied to each logging function is not evaluated if that logging level is not enabled. The check if it is enabled or not is just a boolean.
-So the only cost of the logging code that is shipped in production builds is one test of a boolean variable. This means that you can add and leave a lot of logging
-in your code with paying performance penalties in production.
+There are 3 aspects to logging that have significant overhead:
 
-Also, the tag (class name) is only calculated one time per class when the `val log = logging()` is executed as opposed to some other logging libraries that calculate it on every log call.
-Calculating the tag is expensive and even if it is only done for debug builds it will still slow the performance in debug builds. KmLogging chose to eliminate this performance drain by 
-asking the developer to add an additional line of code `val log = logging()` to each class so this cost is only paid one time per class.
+1. calculating the tag or class name
+1. formatting the log message
+1. determining whether a given log call should be logged or not
 
-Note: if any logger has a given log level enabled then the lambda for that log level will be evaluated. Suppose you have the default configuration and you added a Crashlytics logger that 
-logs at info, warn and error levels. This would mean that the lambda for info, warn and error levels will be evaluated because the Crashlytics logger needs it. So in this scenario
-you would want to have minimal info logging code so as to not slow down the application at runtime and put most of the logging at verbose and debug levels where it will not be evaluated in release builds.
-    
+KmLogging addresses and improves on each of these as compared to other logging libraries:
+
+1. KmLogging calculates the tag just once per module The tag (class name) is only when
+   the `val log = logging()` is executed. Most logging libraries calculate it on every log call or
+   require you to supply it. Calculating the tag is expensive since it normally requires creating
+   and parsing a call stack to get the class name. KmLogging chose to eliminate this performance
+   drain by asking the developer to add an additional line of code `val log = logging()` to each
+   class or module so this cost is only paid one time per class.
+1. KmLogging does not evaluate the message string except when it will be output. Formatting the log
+   message can require many steps and the concatenation of the strings is expensive. All of this
+   code is captured in a lambda which is not executed unless it is determined that the result will
+   be output to the logs.
+1. KmLogging has one a single boolean check to determine if it should log. Calculating whether each
+   level is to be logged is calculated at configuration time i.e. only once and then a boolean flag
+   is stored for each level to signify whether that level is logging or not. The logging functions
+   are inline and result in evaluating one boolean to determine if any logging work should be done.
+   Most logging libraries have a lot of overhead such as many method calls and loops over the
+   configuration objects to determine if logging should be performed or not.
+
+If you have chosen the zero config option then in release builds the logging will be disabled and
+since KmLogging has very little overhead you can leave a lot of logging in your code without paying
+performance penalties in production.
+
+Note: if any logger has a given log level enabled then the lambda for that log level will be
+evaluated. Suppose you used the default configuration and you added a Crashlytics logger that logs
+at info, warn and error levels. This would mean that the lambda for info, warn and error levels will
+be evaluated because the Crashlytics logger needs it. So in this scenario you would want to have
+minimal info logging code so as to not slow down the application at runtime and put most of the
+logging at verbose and debug levels where it will not be evaluated in release builds.
+
 ## Configuration
 
-With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and disabled for release builds. For JavaScript and JVM, logging is enabled by default for all levels.
+With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and
+disabled for release builds. For JavaScript and JVM, logging is enabled by default for all levels.
 
 ### Turn on logging for release builds
-If logging is desired for release builds. Use the supplied `PlatformLogger` and supply it a log level controller that is enabled for all log levels.
+
+If logging is desired for release builds. Use the supplied `PlatformLogger` and supply it a log
+level controller that is enabled for all log levels.
 
 ```kotlin
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(true)))
 ```
 
-### Changing log levels after setup
-
-If log levels are desired to be changed after they are setup then a `MutableLogLevelController` such as `DynamicLogLevel` should be used. 
-The following example will change the `PlatformLogger` to allow it to have its log level changed at runtime. 
-In the example below the level initially is set to Info level and then at some time later it is changed to Verbose level.
-
-```kotlin
-KmLogging.setLogLevel(LogLevel.Info)
-KmLogging.setLoggers(PlatformLogger(DynamicLogLevel))
-// level can be changed at any time ...
-KmLogging.setLogLevel(LogLevel.Verbose)
-```
 ## Miscellaneous
 
 * When calling `KmLogging.setLoggers()` the existing loggers are removed and the supplied ones are added in. 
