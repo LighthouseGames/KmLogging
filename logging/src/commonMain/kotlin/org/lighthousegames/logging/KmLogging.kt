@@ -5,10 +5,10 @@ import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.ThreadLocal
 
 @SharedImmutable
-private val loggers: AtomicReference<List<Logger>> = AtomicReference(listOf<Logger>(PlatformLogger(FixedLogLevel(Platform::isDebug))))
+internal val logFactory: AtomicReference<LogFactory?> = AtomicReference(null)
 
 @SharedImmutable
-internal val logFactory: AtomicReference<LogFactory?> = AtomicReference(null)
+private val loggers: AtomicReference<List<Logger>> = AtomicReference(listOf<Logger>(PlatformLogger(FixedLogLevel(Platform::isDebug))))
 
 @ThreadLocal
 object KmLogging {
