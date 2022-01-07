@@ -1,14 +1,12 @@
 package org.lighthousegames.logging
 
 import co.touchlab.stately.concurrency.AtomicReference
+import logFactory
 import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.ThreadLocal
 
 @SharedImmutable
 private val loggers: AtomicReference<List<Logger>> = AtomicReference(listOf<Logger>(PlatformLogger(FixedLogLevel(Platform::isDebug))))
-
-@SharedImmutable
-internal val logFactory: AtomicReference<LogFactory?> = AtomicReference(null)
 
 @ThreadLocal
 object KmLogging {

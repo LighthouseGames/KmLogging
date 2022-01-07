@@ -1,5 +1,7 @@
 package org.lighthousegames.logging
 
+import logFactory
+
 open class KmLog(tag: String) {
     val tagName = tag
 
