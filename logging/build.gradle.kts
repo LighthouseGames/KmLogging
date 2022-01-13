@@ -8,8 +8,9 @@ kotlin {
     android {
         publishLibraryVariants("release", "debug")
     }
-    ios {
-    }
+    iosArm64()
+    iosX64()
+    iosSimulatorArm64()
     js(BOTH) {
         browser {
         }
@@ -35,7 +36,15 @@ kotlin {
             }
         }
 
-        val iosMain by getting
+        val iosArm64Main by getting
+        val iosX64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosArm64Main.dependsOn(this)
+            iosX64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
 
         val jsMain by getting
     }
