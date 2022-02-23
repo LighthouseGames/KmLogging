@@ -2,11 +2,9 @@ package org.lighthousegames.logging
 
 import platform.CoreFoundation.*
 import platform.UIKit.UIDevice
-import kotlin.native.Platform.isDebugBinary
 
 
 actual object Platform {
-    actual fun isDebug(): Boolean = isDebugBinary
     actual val isIOS: Boolean = true
     actual val isAndroid: Boolean = false
     actual val isJS: Boolean = false

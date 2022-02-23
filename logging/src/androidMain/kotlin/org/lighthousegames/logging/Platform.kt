@@ -3,7 +3,6 @@ package org.lighthousegames.logging
 import android.os.Build
 
 actual object Platform {
-    actual fun isDebug(): Boolean = BuildConfig.DEBUG
     actual val isIOS: Boolean = false
     actual val isAndroid: Boolean = true
     actual val isJS: Boolean = false

@@ -1,7 +1,6 @@
 package org.lighthousegames.logging
 
 expect object Platform {
-    fun isDebug(): Boolean
     val isIOS: Boolean
     val isAndroid: Boolean
     val isJS: Boolean

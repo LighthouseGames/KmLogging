@@ -10,9 +10,12 @@ Kotlin multiplatform logging library targeting Android, iOS, JVM and JS.
 ## Features
 
 * Uses the native logging facility on each platform: Log on Android, os_log on iOS, SLF4J on JVM and console on JavaScript.
-* High performance. Very little overhead when logging is disabled. When disabled, only one boolean is evaluated and no function calls. Building the message string and running the code to calculate it is not executed.
-* No configuration necessary. By default the PlatformLogger is enabled in debug builds and disabled in release builds.
-* Can add additional loggers such as Crashlytics or replace/extend the builtin PlatformLogger with something else
+* High performance. Very little overhead when logging is disabled. When disabled, only one boolean
+  is evaluated and no function calls. Building the message string and running the code to calculate
+  it is not executed.
+* No configuration necessary.
+* Can add additional loggers such as Crashlytics or replace/extend the builtin PlatformLogger with
+  something else
 * Can provide custom/configurable log level control on builtin PlatformLogger such as changing the log level from Remote Config
 * Each logger can log at a different level.
 * All platforms can use the same set of loggers by configuring in common code or can use different ones on each platform by configuring in platform specific code.
@@ -105,9 +108,9 @@ KmLogging addresses and improves on each of these as compared to other logging l
    Most logging libraries have a lot of overhead such as many method calls and loops over the
    configuration objects to determine if logging should be performed or not.
 
-If you have chosen the zero config option then in release builds the logging will be disabled and
-since KmLogging has very little overhead you can leave a lot of logging in your code without paying
-performance penalties in production.
+Since KmLogging has very little overhead when it is disabled, if you turn off logging in release
+builds you can leave a lot of logging in your code without paying performance penalties in
+production.
 
 Note: if any logger has a given log level enabled then the lambda for that log level will be
 evaluated. Suppose you used the default configuration and you added a Crashlytics logger that logs
@@ -118,28 +121,47 @@ logging at verbose and debug levels where it will not be evaluated in release bu
 
 ## Configuration
 
-With no configuration, logging is enabled for Android and iOS for all log levels in debug builds and
-disabled for release builds. For JavaScript and JVM, logging is enabled by default for all levels.
+With no configuration, logging is enabled for all log levels.
 
-### Turn on logging for release builds
+### Turn off logging for release builds
 
-If logging is desired for release builds. Use the supplied `PlatformLogger` and supply it a log
-level controller that is enabled for all log levels.
+If logging is not desired for release builds then use the following to turn off the logging of the
+default PlatformLogger
 
 ```kotlin
-KmLogging.setLoggers(PlatformLogger(FixedLogLevel(true)))
+KmLogging.setLogLevel(LogLevel.Off)
+
+// in Android this could be based on debug flag:
+KmLogging.setLogLevel(if (BuildConfig.DEBUG) LogLevel.Verbose else LogLevel.Off)
+```
+
+or use `PlatformLogger` and supply it a log level controller that is disabled for all log levels:
+
+```kotlin
+KmLogging.setLoggers(PlatformLogger(FixedLogLevel(false)))
+
+// in Android this could be based on debug flag:
+KmLogging.setLoggers(PlatformLogger(FixedLogLevel(BuildConfig.DEBUG)))
 ```
 
 ## Miscellaneous
 
-* When calling `KmLogging.setLoggers()` the existing loggers are removed and the supplied ones are added in. 
+* When calling `KmLogging.setLoggers()` the existing loggers are removed and the supplied ones are
+  added in.
 * If the existing ones should remain then `KmLogging.addLoggers()` should be used.
 * `PlatformLogger` uses Log on Android, os_log on iOS, SLF4j on JVM and console on JS.
-* If a custom logger is created that changes the log level dynamically such as from a Remote Config change then `KmLogging.setupLoggingFlags()` should be called when the logger's log levels were changed to calculate which log levels are enabled. KmLogging maintains variables for each log level corresponding to whether any logger is enabled at that level. This is done for performance reason so only a single boolean check will be done at runtime to minimize the overhead when running in production. The android sample app demonstrates this.
+* If a custom logger is created that changes the log level dynamically such as from a Remote Config
+  change then `KmLogging.setupLoggingFlags()` should be called when the logger's log levels were
+  changed to calculate which log levels are enabled. KmLogging maintains variables for each log
+  level corresponding to whether any logger is enabled at that level. This is done for performance
+  reason so only a single boolean check will be done at runtime to minimize the overhead when
+  running in production. The android sample app demonstrates this.
 
 ## Logging to another system such as Crashlytics
-If logging is only desired at certain levels that can be setup. For example, if only the more important logs should be sent to Crashlytics to give some context to crashes then only log info level and above. 
-That can be easily done by by defining and adding in a logger to do that. The sample android app implement this.
+
+If logging is only desired at certain levels that can be setup. For example, if only the more
+important logs should be sent to Crashlytics to give some context to crashes then only log info
+level and above. That can be easily done by by defining and adding in a logger to do that. The sample android app implement this.
 
 ```kotlin
 class CrashlyticsLogger : Logger {
@@ -199,11 +221,6 @@ class MyClass {
     let log = KmLog(tag: "MyClass")
 }
 ```
-
-## Usage on JVM and JS
-JVM and JS do not have a notion of release and debug builds. So, if you want the `PlatformLogger` to be disabled in a "release" environment 
-then you can call `Platform.setRelease(true)` on these platforms and it will disable logging after that function call if you are using the default loggers i.e. no custom configuration.
-It will be up to you to figure out the difference between a release environment and a debug environment.
 
 ## Usage on JVM
 You will need to include a dependency on the logging library of your choice that is compatible with SLF4J. See the sample app which uses `logback`. 
