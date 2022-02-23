@@ -131,7 +131,7 @@ default PlatformLogger
 ```kotlin
 KmLogging.setLogLevel(LogLevel.Off)
 
-// in Android this could be based on debug flag:
+// in Android this could be based on the debug flag:
 KmLogging.setLogLevel(if (BuildConfig.DEBUG) LogLevel.Verbose else LogLevel.Off)
 ```
 
@@ -140,7 +140,7 @@ or use `PlatformLogger` and supply it a log level controller that is disabled fo
 ```kotlin
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(false)))
 
-// in Android this could be based on debug flag:
+// in Android this could be based on the debug flag:
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(BuildConfig.DEBUG)))
 ```
 
