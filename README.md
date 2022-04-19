@@ -223,13 +223,47 @@ class MyClass {
 ```
 
 ## Usage on JVM
-You will need to include a dependency on the logging library of your choice that is compatible with SLF4J. See the sample app which uses `logback`. 
-Since SLF4J controls the log level using its own configurations it is advisable to retain the use of FixedLogLevel in the default configuration as the log level controller.
-The log level controller in KmLogging controls the possibility of logging occurring with SLF4J controlling whether a particular log usage is output or not.
+
+You will need to include a dependency on the logging library of your choice that is compatible with
+SLF4J. See the sample app which uses `logback`. Since SLF4J controls the log level using its own
+configurations it is advisable to retain the use of FixedLogLevel in the default configuration as
+the log level controller. The log level controller in KmLogging controls the possibility of logging
+occurring with SLF4J controlling whether a particular log usage is output or not.
+
+## Usage in Libraries
+
+A best practice for libraries is to not have its logging turned on be default. If both a library and
+an application both use KmLogging then the library will have its logging turned on automatically. To
+enable or disable a library's logging independently of the application, the library needs to use a
+wrapper so logging can be turned on/off using a variable.
+
+Example usage with code implemented in ChartsLogging.kt:
+
+```kotlin
+ object ChartsLogging {
+     var enabled = true
+ }
+
+ fun moduleLogging(tag: String? = null): KmModuleLog {
+     // string passed into createTag should be the name of the class that this function is implemented in
+     // if it is a top level function then the class name is the file name with Kt appended
+     val t = tag ?: KmLogging.createTag("ChartsLoggingKt").first
+     return KmModuleLog(logging(t), ChartsLogging::enabled)
+ }
+```
+
+The library code would then use this new function to do its logging:
+
+```kotlin
+    val log = moduleLogging()
+```
 
 ## Quick migration of Android Log calls
-Once you have adopted KmLogging, what do you do with all your existing Android code that is using the Log class? 
-The first quick and easy step is to switch all your code to using org.lighthousegames.logging.Log class which mimics the Android Log class 
-but sends all output through KmLogging so you can turn it on and off at the same time as with all other KmLog usages and have all its benefits. 
-To do this simply replace all occurrences of `import android.util.Log` in your code base with `import org.lighthousegames.logging.Log`
+
+Once you have adopted KmLogging, what do you do with all your existing Android code that is using
+the Log class? The first quick and easy step is to switch all your code to using
+org.lighthousegames.logging.Log class which mimics the Android Log class but sends all output
+through KmLogging so you can turn it on and off at the same time as with all other KmLog usages and
+have all its benefits. To do this simply replace all occurrences of `import android.util.Log` in
+your code base with `import org.lighthousegames.logging.Log`
 
