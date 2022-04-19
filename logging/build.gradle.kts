@@ -11,7 +11,7 @@ kotlin {
     iosArm64()
     iosX64()
     iosSimulatorArm64()
-    js(BOTH) {
+    js {
         browser {
         }
     }
@@ -68,7 +68,7 @@ tasks {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "1.1.2"
+extra["artifactVersion"] = "1.2.0"
 extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"

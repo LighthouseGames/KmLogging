@@ -116,10 +116,14 @@ open class KmLog(tag: String) {
     }
 }
 
+/**
+ * Create a logging object. This is the primary entry point for logging and should be called once for each file, class or object.
+ * For classes a val can be created either as a private member of the class or as a member of the companion object.
+ * @param tag string to be used instead of the calculated tag based on the class name or file name.
+ */
 fun logging(tag: String? = null): KmLog {
+    if (tag != null)
+        return logFactory.get()?.createKmLog(tag, tag) ?: KmLog(tag)
     val (tagCalculated, className) = KmLogging.createTag("KmLog")
-    val t = tag ?: tagCalculated
-    return logFactory.get()?.createKmLog(t, className) ?: KmLog(t)
+    return logFactory.get()?.createKmLog(tagCalculated, className) ?: KmLog(tagCalculated)
 }
-
-

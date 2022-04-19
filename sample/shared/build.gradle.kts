@@ -17,7 +17,7 @@ kotlin {
             }
         }
     }
-    js(LEGACY) {
+    js {
         browser {
         }
     }
