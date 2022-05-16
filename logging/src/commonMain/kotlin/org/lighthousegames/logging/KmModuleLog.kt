@@ -57,7 +57,7 @@ class KmModuleLog(val log: KmLog, val isModuleLogging: () -> Boolean) {
 
     inline fun w(err: Throwable?, tag: String? = null, msg: () -> Any?) {
         if (isModuleLogging())
-            log.warn(err, tag, msg)
+            log.warn(tag, err, msg)
     }
 
     inline fun e(msg: () -> Any?) {
@@ -67,6 +67,6 @@ class KmModuleLog(val log: KmLog, val isModuleLogging: () -> Boolean) {
 
     inline fun e(err: Throwable?, tag: String? = null, msg: () -> Any?) {
         if (isModuleLogging())
-            log.error(err, tag, msg)
+            log.error(tag, err, msg)
     }
 }

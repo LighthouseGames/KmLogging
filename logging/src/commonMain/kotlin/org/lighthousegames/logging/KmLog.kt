@@ -5,115 +5,72 @@ open class KmLog(tag: String) {
 
     constructor() : this(KmLogging.createTag("KmLog").first)
 
-    inline fun verbose(msg: () -> Any?) {
+    open fun verbose(tag: String?, msg: String) {
         if (KmLogging.isLoggingVerbose)
-            verboseApi(tagName, msg().toString())
+            KmLogging.verbose(tag ?: tagName, msg)
     }
+    inline fun verbose(msg: String) = verbose(null, msg)
+    inline fun verbose(msg: () -> Any?) = verbose(msg().toString())
+    inline fun verbose(tag: String?, msg: () -> Any?) = verbose(tag, msg().toString())
 
-    inline fun verbose(tag: String, msg: () -> Any?) {
-        if (KmLogging.isLoggingVerbose)
-            verboseApi(tag, msg().toString())
-    }
-
-    inline fun v(tag: String? = null, msg: () -> Any?) {
-        if (KmLogging.isLoggingVerbose)
-            verboseApi(tag ?: tagName, msg().toString())
-    }
-
-    inline fun debug(msg: () -> Any?) {
+    open fun debug(tag: String?, msg: String) {
         if (KmLogging.isLoggingDebug)
-            debugApi(tagName, msg().toString())
+            KmLogging.debug(tag ?: tagName, msg)
     }
+    inline fun debug(msg: String) = debug(tagName, msg)
+    inline fun debug(msg: () -> Any?) = debug(msg().toString())
+    inline fun debug(tag: String?, msg: () -> Any?) = debug(tag, msg().toString())
 
-    inline fun debug(tag: String, msg: () -> Any?) {
-        if (KmLogging.isLoggingDebug)
-            debugApi(tag, msg().toString())
-    }
-
-    inline fun d(tag: String? = null, msg: () -> Any?) {
-        if (KmLogging.isLoggingDebug)
-            debugApi(tag ?: tagName, msg().toString())
-    }
-
-    inline fun info(msg: () -> Any?) {
+    open fun info(tag: String?, msg: String) {
         if (KmLogging.isLoggingInfo)
-            infoApi(tagName, msg().toString())
+            KmLogging.info(tag ?: tagName, msg)
     }
+    inline fun info(msg: String) = info(null, msg)
+    inline fun info(msg: () -> Any?) = info(msg().toString())
+    inline fun info(tag: String?, msg: () -> Any?) = info(tag, msg().toString())
 
-    inline fun info(tag: String, msg: () -> Any?) {
-        if (KmLogging.isLoggingInfo)
-            infoApi(tag, msg().toString())
-    }
-
-    inline fun i(tag: String? = null, msg: () -> Any?) {
-        if (KmLogging.isLoggingInfo)
-            infoApi(tag ?: tagName, msg().toString())
-    }
-
-    inline fun warn(msg: () -> Any?) {
+    open fun warn(tag: String?, msg: String, err: Throwable? = null) {
         if (KmLogging.isLoggingWarning)
-            warnApi(tagName, msg().toString(), null)
+            KmLogging.warn(tag ?: tagName, msg)
     }
+    inline fun warn(msg: String, err: Throwable? = null) = warn(null, msg, err)
+    inline fun warn(msg: () -> Any?) = warn(null, msg().toString(), null)
+    inline fun warn(tag: String? = null, err: Throwable? = null, msg: () -> Any?) = warn(tag, msg().toString(), err)
 
-    inline fun warn(err: Throwable?, tag: String? = null, msg: () -> Any?) {
+    open fun error(tag: String?, msg: String, err: Throwable? = null) {
         if (KmLogging.isLoggingWarning)
-            warnApi(tag ?: tagName, msg().toString(), err)
+            KmLogging.error(tag ?: tagName, msg)
     }
+    inline fun error(msg: String, err: Throwable? = null) = error(null, msg, err)
+    inline fun error(msg: () -> Any?) = error(null, msg().toString(), null)
+    inline fun error(tag: String? = null, err: Throwable? = null, msg: () -> Any?) = error(tag, msg().toString(), err)
 
-    inline fun w(err: Throwable? = null, tag: String? = null, msg: () -> Any?) {
-        if (KmLogging.isLoggingWarning)
-            warnApi(tag ?: tagName, msg().toString(), err)
-    }
 
-    inline fun error(msg: () -> Any?) {
-        if (KmLogging.isLoggingError)
-            errorApi(tagName, msg().toString(), null)
-    }
+    inline fun v(tag: String?, msg: String) = verbose(tag, msg)
+    inline fun v(msg: String) = verbose(msg)
+    inline fun v(msg: () -> Any?) = verbose(msg)
+    inline fun v(tag: String?, msg: () -> Any?) = verbose(tag, msg)
 
-    inline fun error(err: Throwable?, tag: String? = null, msg: () -> Any?) {
-        if (KmLogging.isLoggingError)
-            errorApi(tag ?: tagName, msg().toString(), err)
-    }
+    inline fun d(tag: String?, msg: String) = debug(tag, msg)
+    inline fun d(msg: String) = debug(msg)
+    inline fun d(msg: () -> Any?) = debug(msg)
+    inline fun d(tag: String?, msg: () -> Any?) = debug(tag, msg)
 
-    inline fun e(err: Throwable? = null, tag: String? = null, msg: () -> Any?) {
-        if (KmLogging.isLoggingError)
-            errorApi(tag ?: tagName, msg().toString(), err)
-    }
+    inline fun i(tag: String?, msg: String) = info(tag, msg)
+    inline fun i(msg: String) = info(msg)
+    inline fun i(msg: () -> Any?) = info(msg)
+    inline fun i(tag: String?, msg: () -> Any?) = info(tag, msg)
 
-    @PublishedApi
-    internal fun verboseApi(tag: String, msg: String) = verbose(tag, msg)
+    inline fun w(tag: String?, msg: String, err: Throwable? = null) = warn(tag, msg, err)
+    inline fun w(msg: String, err: Throwable? = null) = warn(msg, err)
+    inline fun w(msg: () -> Any?) = warn(msg)
+    inline fun w(tag: String? = null, err: Throwable? = null, msg: () -> Any?) = warn(tag, err, msg)
 
-    @PublishedApi
-    internal fun debugApi(tag: String, msg: String) = debug(tag, msg)
 
-    @PublishedApi
-    internal fun infoApi(tag: String, msg: String) = info(tag, msg)
-
-    @PublishedApi
-    internal fun warnApi(tag: String, msg: String, t: Throwable?) = warn(tag, msg, t)
-
-    @PublishedApi
-    internal fun errorApi(tag: String, msg: String, t: Throwable?) = error(tag, msg, t)
-
-    protected open fun verbose(tag: String, msg: String) {
-        KmLogging.verbose(tag, msg)
-    }
-
-    protected open fun debug(tag: String, msg: String) {
-        KmLogging.debug(tag, msg)
-    }
-
-    protected open fun info(tag: String, msg: String) {
-        KmLogging.info(tag, msg)
-    }
-
-    protected open fun warn(tag: String, msg: String, t: Throwable? = null) {
-        KmLogging.warn(tag, msg, t)
-    }
-
-    protected open fun error(tag: String, msg: String, t: Throwable? = null) {
-        KmLogging.error(tag, msg, t)
-    }
+    inline fun e(tag: String?, msg: String, err: Throwable? = null) = error(tag, msg, err)
+    inline fun e(msg: String, err: Throwable? = null) = error(msg, err)
+    inline fun e(msg: () -> Any?) = error(msg)
+    inline fun e(tag: String? = null, err: Throwable? = null, msg: () -> Any?) = error(tag, err, msg)
 }
 
 /**
