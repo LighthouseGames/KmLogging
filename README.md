@@ -237,7 +237,7 @@ an application both use KmLogging then the library will have its logging turned 
 enable or disable a library's logging independently of the application, the library needs to use a
 wrapper so logging can be turned on/off using a variable.
 
-Example usage with code implemented in ChartsLogging.kt:
+Example usage with code implemented in [ChartsLogging.kt]([https://github.com/ellsworthrw/DiamondCharts](https://github.com/ellsworthrw/DiamondCharts/blob/main/charts/src/main/java/com/diamondedge/charts/ChartsLogging.kt):
 
 ```kotlin
  object ChartsLogging {
