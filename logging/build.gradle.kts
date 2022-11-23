@@ -32,7 +32,7 @@ kotlin {
 
         val jvmMain by getting {
             dependencies {
-                implementation("org.slf4j:slf4j-api:1.7.30")
+                implementation("org.slf4j:slf4j-api:1.7.32")
             }
         }
 
@@ -57,6 +57,7 @@ android {
         minSdk = 14
         consumerProguardFiles("proguard.txt")
     }
+    namespace = "org.lighthousegames.core"
 }
 
 tasks {
@@ -68,7 +69,7 @@ tasks {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "1.2.0"
+extra["artifactVersion"] = "1.2.1"
 extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"

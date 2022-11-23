@@ -78,7 +78,7 @@ class TimingLog(private val label: String, tag: String? = null) {
         reset()
     }
 
-    private fun reset() {
+    fun reset() {
         timing.clear()
         add("", false)
     }
