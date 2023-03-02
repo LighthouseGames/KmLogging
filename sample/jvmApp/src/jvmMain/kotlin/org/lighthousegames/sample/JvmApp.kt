@@ -2,7 +2,6 @@ package org.lighthousegames.sample
 
 import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.core.util.StatusPrinter
-import org.lighthousegames.logging.Platform
 import org.lighthousegames.logging.logging
 import org.slf4j.LoggerFactory
 
@@ -41,9 +40,6 @@ class JvmApp {
             StatusPrinter.print(LoggerFactory.getILoggerFactory() as LoggerContext)
             log.i { "main()" }
             val test = TestClass()
-            test.foo()
-            Platform.setRelease(true)
-            // following should not generate logging
             test.foo()
         }
     }

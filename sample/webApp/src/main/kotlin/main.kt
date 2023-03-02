@@ -3,7 +3,6 @@ import kotlinx.browser.window
 import kotlinx.html.div
 import kotlinx.html.dom.append
 import kotlinx.html.js.onClickFunction
-import org.lighthousegames.logging.Platform
 import org.lighthousegames.logging.logging
 import org.lighthousegames.sample.shared.Greeting
 import org.w3c.dom.Node
@@ -29,19 +28,15 @@ fun Node.sayHello() {
             }
         }
         div {
-            +"setRelease"
+            +"verbose"
             onClickFunction = { event ->
-                log.i { "setRelease.onClick($event)" }
-                Platform.setRelease(true)
-                log.d { "not logged" }
+                log.v { "verbose.onClick($event)" }
             }
         }
         div {
-            +"setDebug"
+            +"warn"
             onClickFunction = { event ->
-                log.i { "setDebug.onClick($event)" }
-                Platform.setRelease(false)
-                log.d { "logging started" }
+                log.w { "warn.onClick($event)" }
             }
         }
     }

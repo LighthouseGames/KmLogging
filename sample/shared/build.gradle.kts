@@ -12,7 +12,7 @@ kotlin {
         binaries {
             framework {
                 baseName = "shared"
-                export("org.lighthousegames:logging:1.1.2")
+                export("org.lighthousegames:logging:1.3.0")
 //                export(project(":logging"))
             }
         }
