@@ -11,20 +11,20 @@ kotlin {
     iosArm64()
     iosX64()
     iosSimulatorArm64()
-    js {
+    js(BOTH) {
         browser {
         }
     }
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "11"
         }
     }
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("co.touchlab:stately-concurrency:1.1.10")
+                implementation("co.touchlab:stately-concurrency:1.2.5")
             }
         }
 
@@ -69,7 +69,7 @@ tasks {
 }
 
 extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "1.2.1"
+extra["artifactVersion"] = "1.3.0"
 extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"

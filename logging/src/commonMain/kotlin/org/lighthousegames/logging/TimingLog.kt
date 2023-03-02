@@ -55,13 +55,22 @@ class TimingLog(private val label: String, tag: String? = null) {
         }
     }
 
-    fun finish() {
+    /**
+     * Report timing logs.
+     * If minThresholdMs is greater than 0 then only report if total time exceeds this amount
+     * @param minThresholdMs threshold in milliseconds
+     */
+    fun finish(minThresholdMs: Long = 0) {
         if (KmLogging.isLoggingDebug || timing.size > 1) {
-            KmLogging.debug(tagName, "$label: begin TimingLog")
             val first = timing[0].time
             var now = first
             var prevDebug = first
             var prev = first
+            val totalTime = timing.last().time - first
+            if (minThresholdMs > 0 && totalTime < minThresholdMs * 1_000_000) {
+                return
+            }
+            KmLogging.debug(tagName, "$label: begin TimingLog")
             for (i in 1 until timing.size) {
                 val t = timing[i]
                 now = t.time
