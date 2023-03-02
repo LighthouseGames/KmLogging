@@ -24,7 +24,8 @@ Kotlin multiplatform logging library targeting Android, iOS, JVM and JS.
 
 The library is available from the Maven Central repository with the current version
 of ![ver](https://img.shields.io/maven-central/v/org.lighthousegames/logging)
-You should use at least version `1.5.30` of the kotlin multiplatform plugin. The recommended kotlin version is `1.6.10`. Place the following in
+You should use at least version `1.5.30` of the kotlin multiplatform plugin. The recommended kotlin
+version is `1.8.10`. Place the following in
 the commonMain section.
 
 build.gradle.kts
