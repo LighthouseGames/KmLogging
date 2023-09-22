@@ -7,11 +7,10 @@ import kotlin.native.concurrent.ThreadLocal
 @SharedImmutable
 internal val logFactory: AtomicReference<LogFactory?> = AtomicReference(null)
 
-@SharedImmutable
-private val loggers: AtomicReference<List<Logger>> = AtomicReference(listOf<Logger>(PlatformLogger(FixedLogLevel(true))))
-
 @ThreadLocal
 object KmLogging {
+    private val loggers: AtomicReference<List<Logger>> = AtomicReference(listOf<Logger>(PlatformLogger(FixedLogLevel(true))))
+
     var isLoggingVerbose = true
     var isLoggingDebug = true
     var isLoggingInfo = true
@@ -30,7 +29,7 @@ object KmLogging {
         for (logger in loggers) {
             list.add(logger)
         }
-        org.lighthousegames.logging.loggers.set(list)
+        this.loggers.set(list)
         setupLoggingFlags()
     }
 
