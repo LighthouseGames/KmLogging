@@ -55,6 +55,16 @@ object KmLogging {
         setupLoggingFlags()
     }
 
+    /**
+     * Removes loggers. For use by native platforms that cannot use the vararg setLoggers.
+     */
+    fun removeLogger(logger: Logger) {
+        val list = ArrayList(loggers.get())
+        list.remove(logger)
+        loggers.set(list)
+        setupLoggingFlags()
+    }
+
     /*
      * Convenience method that sets the log level of the PlatformLogger if there is one.
      */
