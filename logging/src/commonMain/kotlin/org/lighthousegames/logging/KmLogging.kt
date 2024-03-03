@@ -8,7 +8,7 @@ import kotlin.native.concurrent.ThreadLocal
 internal val logFactory: AtomicReference<LogFactory?> = AtomicReference(null)
 
 @SharedImmutable
-private val loggers: AtomicReference<List<Logger>> = AtomicReference(listOf<Logger>(PlatformLogger(FixedLogLevel(true))))
+private val loggers: AtomicReference<List<Logger>> = AtomicReference(emptyList())
 
 @ThreadLocal
 object KmLogging {
@@ -19,6 +19,9 @@ object KmLogging {
     var isLoggingError = true
 
     init {
+        if (loggers.get().isEmpty()) {
+            loggers.set(listOf<Logger>(PlatformLogger(FixedLogLevel(true))))
+        }
         setupLoggingFlags()
     }
 

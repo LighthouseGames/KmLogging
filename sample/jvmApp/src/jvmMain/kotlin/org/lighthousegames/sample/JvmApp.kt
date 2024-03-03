@@ -32,7 +32,7 @@ class TestClass2 {
 
 class JvmApp {
     companion object {
-        val log = logging()
+        val log = logging("test")
 
         @JvmStatic
         fun main(args: Array<String>) {

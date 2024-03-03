@@ -77,7 +77,7 @@ tasks {
 }
 
 extra["artifactId"] = "logging"
-extra["artifactVersion"] = "1.4.1"
+extra["artifactVersion"] = "1.4.2"
 extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"

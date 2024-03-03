@@ -15,7 +15,7 @@ kotlin {
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
-            export("org.lighthousegames:logging:1.4.1")
+            export("org.lighthousegames:logging:1.4.2")
 //                export(project(":logging"))
         }
     }
@@ -28,7 +28,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("org.lighthousegames:logging:1.4.1")
+                api("org.lighthousegames:logging:1.4.2")
 //                api(project(":logging"))
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
             }

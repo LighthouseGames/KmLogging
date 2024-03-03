@@ -144,6 +144,17 @@ KmLogging.setLoggers(PlatformLogger(FixedLogLevel(false)))
 KmLogging.setLoggers(PlatformLogger(FixedLogLevel(BuildConfig.DEBUG)))
 ```
 
+## Kotlin version support
+
+| KmLogging version | Kotlin version |
+|-------------------|----------------|
+| 1.4.1             | 1.8.22         |
+| 1.3.0             | 1.8.10         |
+| 1.2.1             | 1.7.21         |
+| 1.2.0             | 1.6.10         |
+| 1.1.0             | 1.5.32         |
+| 1.0.0             | 1.4.30         |
+
 ## Miscellaneous
 
 * When calling `KmLogging.setLoggers()` the existing loggers are removed and the supplied ones are
