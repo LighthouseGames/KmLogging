@@ -19,6 +19,7 @@ Kotlin multiplatform logging library targeting Android, iOS, JVM and JS.
 * Can provide custom/configurable log level control on builtin PlatformLogger such as changing the log level from Remote Config
 * Each logger can log at a different level.
 * All platforms can use the same set of loggers by configuring in common code or can use different ones on each platform by configuring in platform specific code.
+* It is thread-safe
 
 ## Setup
 
