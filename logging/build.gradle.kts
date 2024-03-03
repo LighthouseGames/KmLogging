@@ -1,25 +1,32 @@
+import com.vanniktech.maven.publish.SonatypeHost
+
 plugins {
     id("com.android.library")
     kotlin("multiplatform")
     id("org.jetbrains.dokka")
+    id("com.vanniktech.maven.publish") version "0.27.0"
 }
 
 kotlin {
     android {
         publishLibraryVariants("release", "debug")
     }
-    iosArm64()
-    iosX64()
-    iosSimulatorArm64()
-    js(BOTH) {
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "logging"
+            isStatic = true
+        }
+    }
+
+    js(IR) {
         browser {
         }
     }
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "11"
-        }
-    }
+    jvm()
 
     sourceSets {
         val commonMain by getting {
@@ -51,28 +58,91 @@ kotlin {
 }
 
 android {
-    compileSdk = 31
+    namespace = "org.lighthousegames.core"
+    compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
-        minSdk = 14
+        minSdk = 21
         consumerProguardFiles("proguard.txt")
     }
-    namespace = "org.lighthousegames.core"
 }
 
 tasks {
     create<Jar>("javadocJar") {
+        println("creating javadocJar")
         archiveClassifier.set("javadoc")
         dependsOn(dokkaHtml)
         from(dokkaHtml.get().outputDirectory)
     }
 }
 
-extra["artifactId"] = "kmlogging"
-extra["artifactVersion"] = "1.3.0"
+extra["artifactId"] = "logging"
+extra["artifactVersion"] = "1.4.1"
 extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"
 
-apply(from = "publish.gradle.kts")
+// defined in project's gradle.properties
+val groupId: String by project
+val licenseName: String by project
+val licenseUrl: String by project
+// optional properties
+val orgId: String? by project
+val orgName: String? by project
+val orgUrl: String? by project
+val developerName: String? by project
+val developerId: String? by project
 
+val artifactId: String by extra
+val artifactVersion: String by extra
+val libraryName: String by extra
+val libraryDescription: String by extra
+val gitUrl: String by extra
+
+project.group = groupId
+project.version = artifactVersion
+
+mavenPublishing {
+    coordinates(groupId = groupId, artifactId = artifactId, version = artifactVersion)
+    pom {
+        name.set(libraryName)
+        description.set(libraryDescription)
+        url.set(gitUrl)
+
+        licenses {
+            license {
+                name.set(licenseName)
+                url.set(licenseUrl)
+            }
+        }
+        scm {
+            url.set(gitUrl)
+        }
+        developers {
+            if (!developerId.isNullOrEmpty()) {
+                developer {
+                    id.set(developerId)
+                    name.set(developerName)
+                }
+            }
+            if (!orgId.isNullOrEmpty()) {
+                developer {
+                    id.set(orgId)
+                    name.set(orgName)
+                    organization.set(orgName)
+                    organizationUrl.set(orgUrl)
+                }
+            }
+        }
+        if (!orgName.isNullOrEmpty()) {
+            organization {
+                name.set(orgName)
+                if (!orgUrl.isNullOrEmpty())
+                    url.set(orgUrl)
+            }
+        }
+    }
+
+    publishToMavenCentral(SonatypeHost.DEFAULT)
+    signAllPublications()
+}

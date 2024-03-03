@@ -17,4 +17,4 @@ const val ERROR_MASK = 0x1
 const val WARN_MASK = 0x2
 const val INFO_MASK = 0x4
 const val DEBUG_MASK = 0x8
-const val VERBOSE_MASK = 0x16
+const val VERBOSE_MASK = 0x10

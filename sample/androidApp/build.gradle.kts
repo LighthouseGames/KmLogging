@@ -20,11 +20,12 @@ dependencies {
 }
 
 android {
-    compileSdk = 31
+    namespace = "org.lighthousegames.sample"
+    compileSdk = 33
     defaultConfig {
         applicationId = "org.lighthousegames.sample"
         minSdk = 21
-        targetSdk = 31
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
     }

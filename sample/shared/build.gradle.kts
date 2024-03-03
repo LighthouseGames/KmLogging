@@ -1,5 +1,4 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("multiplatform")
@@ -8,13 +7,16 @@ plugins {
 
 kotlin {
     android()
-    ios {
-        binaries {
-            framework {
-                baseName = "shared"
-                export("org.lighthousegames:logging:1.3.0")
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "shared"
+            isStatic = true
+            export("org.lighthousegames:logging:1.4.1")
 //                export(project(":logging"))
-            }
         }
     }
     js(IR) {
@@ -26,35 +28,20 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api("org.lighthousegames:logging:1.1.2")
+                api("org.lighthousegames:logging:1.4.1")
 //                api(project(":logging"))
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
             }
         }
-        val androidMain by getting {
-            dependencies {
-            }
-        }
-        val iosMain by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt")
-            }
-        }
-        val jsMain by getting
-        val jvmMain by getting
     }
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
-}
-
 android {
-    compileSdk = 31
+    namespace = "org.lighthousegames.sample"
+    compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
-        targetSdk = 31
     }
 }
 

@@ -114,6 +114,10 @@ open class KmLog(tag: String) {
     protected open fun error(tag: String, msg: String, t: Throwable? = null) {
         KmLogging.error(tag, msg, t)
     }
+
+    override fun toString(): String {
+        return "KmLog(tagName='$tagName')"
+    }
 }
 
 /**

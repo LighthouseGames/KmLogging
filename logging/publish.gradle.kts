@@ -28,53 +28,49 @@ project.group = groupId
 project.version = artifactVersion
 
 configure<PublishingExtension> {
-    val publishing = this
-    publications {
-        withType<MavenPublication> {
-            groupId = groupId
-            artifactId = artifactId
-            version = artifactVersion
+    publications.withType<MavenPublication> {
 
-            if (name == "jvm") {
-                artifact(tasks["javadocJar"])
+        groupId = groupId
+        artifactId = artifactId
+        version = artifactVersion
+
+        artifact(tasks["javadocJar"])
+
+        pom {
+            name.set(libraryName)
+            description.set(libraryDescription)
+            url.set(gitUrl)
+
+            licenses {
+                license {
+                    name.set(licenseName)
+                    url.set(licenseUrl)
+                }
             }
-
-            pom {
-                name.set(libraryName)
-                description.set(libraryDescription)
+            scm {
                 url.set(gitUrl)
-
-                licenses {
-                    license {
-                        name.set(licenseName)
-                        url.set(licenseUrl)
+            }
+            developers {
+                if (!developerId.isNullOrEmpty()) {
+                    developer {
+                        id.set(developerId)
+                        name.set(developerName)
                     }
                 }
-                scm {
-                    url.set(gitUrl)
-                }
-                developers {
-                    if (!developerId.isNullOrEmpty()) {
-                        developer {
-                            id.set(developerId)
-                            name.set(developerName)
-                        }
-                    }
-                    if (!orgId.isNullOrEmpty()) {
-                        developer {
-                            id.set(orgId)
-                            name.set(orgName)
-                            organization.set(orgName)
-                            organizationUrl.set(orgUrl)
-                        }
-                    }
-                }
-                if (!orgName.isNullOrEmpty()) {
-                    organization {
+                if (!orgId.isNullOrEmpty()) {
+                    developer {
+                        id.set(orgId)
                         name.set(orgName)
-                        if (!orgUrl.isNullOrEmpty())
-                            url.set(orgUrl)
+                        organization.set(orgName)
+                        organizationUrl.set(orgUrl)
                     }
+                }
+            }
+            if (!orgName.isNullOrEmpty()) {
+                organization {
+                    name.set(orgName)
+                    if (!orgUrl.isNullOrEmpty())
+                        url.set(orgUrl)
                 }
             }
         }

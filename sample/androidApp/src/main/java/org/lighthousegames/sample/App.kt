@@ -9,7 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.lighthousegames.logging.*
+import org.lighthousegames.logging.KmLogging
+import org.lighthousegames.logging.Log
+import org.lighthousegames.logging.LogLevel
+import org.lighthousegames.logging.PlatformLogger
+import org.lighthousegames.logging.VariableLogLevel
+import org.lighthousegames.logging.logging
 
 class App : Application() {
     private val log = logging()
@@ -27,7 +32,7 @@ class App : Application() {
 
     private fun setupRemoteConfig() {
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = if (BuildConfig.DEBUG) 60 else 3600
+            minimumFetchIntervalInSeconds = /*if (BuildConfig.DEBUG) 60 else*/ 3600
         }
         remoteConfig.setConfigSettingsAsync(configSettings)
         GlobalScope.launch(Dispatchers.IO) {

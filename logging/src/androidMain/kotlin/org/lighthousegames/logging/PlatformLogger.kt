@@ -46,4 +46,8 @@ actual open class PlatformLogger actual constructor(actual val logLevel: LogLeve
         pos = if (pos < 0) 0 else pos + 1
         return className.substring(pos)
     }
+
+    override fun toString(): String {
+        return "PlatformLogger(logLevel=$logLevel)"
+    }
 }
