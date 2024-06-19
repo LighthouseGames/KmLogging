@@ -1,13 +1,10 @@
 package org.lighthousegames.logging
 
 import co.touchlab.stately.concurrency.AtomicReference
-import kotlin.native.concurrent.SharedImmutable
 import kotlin.native.concurrent.ThreadLocal
 
-@SharedImmutable
 internal val logFactory: AtomicReference<LogFactory?> = AtomicReference(null)
 
-@SharedImmutable
 private val loggers: AtomicReference<List<Logger>> = AtomicReference(emptyList())
 
 @ThreadLocal

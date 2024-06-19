@@ -1,5 +1,6 @@
 package org.lighthousegames.logging
 
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.ptr
 import platform.Foundation.NSThread
 import platform.darwin.OS_LOG_DEFAULT
@@ -11,6 +12,7 @@ import platform.darwin.OS_LOG_TYPE_INFO
 import platform.darwin.__dso_handle
 import platform.darwin._os_log_internal
 
+@OptIn(ExperimentalForeignApi::class)
 actual class PlatformLogger actual constructor(actual val logLevel: LogLevelController) : Logger, TagProvider, LogLevelController by logLevel {
 
     actual override fun verbose(tag: String, msg: String) {

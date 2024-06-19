@@ -1,20 +1,18 @@
 plugins {
-    kotlin("js")
-}
-
-dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-html:0.7.3")
-    implementation(project(":sample:shared"))
+    kotlin("multiplatform")
 }
 
 kotlin {
-    js(IR) {
+    js {
         browser {
-            binaries.executable()
-            commonWebpackConfig {
-                cssSupport {
-                    enabled.set(true)
-                }
+        }
+        binaries.executable()
+    }
+    sourceSets {
+        val jsMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-html:0.8.0")
+                implementation(project(":sample:shared"))
             }
         }
     }

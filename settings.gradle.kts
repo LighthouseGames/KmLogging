@@ -4,8 +4,8 @@ pluginManagement {
         gradlePluginPortal()
     }
     plugins {
-        id("org.jetbrains.dokka") version "1.9.10"
-        kotlin("multiplatform") version "1.9.20"
+        id("org.jetbrains.dokka") version "1.9.20"
+        kotlin("multiplatform") version "1.9.24"
     }
 }
 

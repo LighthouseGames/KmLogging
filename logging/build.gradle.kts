@@ -4,7 +4,7 @@ plugins {
     id("com.android.library")
     kotlin("multiplatform")
     id("org.jetbrains.dokka")
-    id("com.vanniktech.maven.publish") version "0.27.0"
+    id("com.vanniktech.maven.publish") version "0.28.0"
 }
 
 kotlin {
@@ -77,7 +77,7 @@ tasks {
 }
 
 extra["artifactId"] = "logging"
-extra["artifactVersion"] = "1.4.2"
+extra["artifactVersion"] = "1.5.0"
 extra["libraryName"] = "KmLogging: Kotlin Multiplatform Logging"
 extra["libraryDescription"] = "KmLogging is a high performance, extensible and easy to use logging library for Kotlin Multiplatform development"
 extra["gitUrl"] = "https://github.com/LighthouseGames/KmLogging"
